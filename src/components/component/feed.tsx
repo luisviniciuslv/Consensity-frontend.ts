@@ -27,12 +27,14 @@ interface Post {
 }
 export function Feed() {
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false)
   const [posts, setPosts] = useState<Post[]>([]);
   useEffect(() => {
     axios
-      .get("http://localhost:1500/post/r/lastPosts")
+      .get("http://localhost:1500/post/lastPosts")
       .then((response) => {
         setLoading(false);
+        if (response.status != 404) setError(true)
         setPosts(response.data);
       })
       .catch((error) => {

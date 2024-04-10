@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, JSX, SVGProps } from "react";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
 import {
@@ -26,18 +26,20 @@ interface Post {
   coments: string[];
 }
 export function Feed() {
+  const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState<Post[]>([]);
   useEffect(() => {
     axios
       .get("http://localhost:1500/post/r/lastPosts")
       .then((response) => {
+        setLoading(false);
         setPosts(response.data);
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
-  
+
   return (
     <div className="max-w-4xl mx-auto p-4">
       <div className="flex items-center space-x-4 mb-6">
@@ -46,24 +48,30 @@ export function Feed() {
         <UserIcon className="w-6 h-6" />
       </div>
       <div className="space-y-6">
-        {posts.map((post: any) => (
-          // eslint-disable-next-line react/jsx-key
-          <Card className="w-full">
-            <CardHeader>
-              <CardTitle>{post.title}</CardTitle>
-              <CardDescription>
-                {post.author} on {post.created_at.toString()}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>{post.content}</CardContent>
-          </Card>
-        ))}
+        {!loading ? (
+          posts.map((post: any) => (
+            // eslint-disable-next-line react/jsx-key
+            <Card className="w-full">
+              <CardHeader>
+                <CardTitle>{post.title}</CardTitle>
+                <CardDescription>
+                  {post.author} on {post.created_at.toString()}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>{post.content}</CardContent>
+            </Card>
+          ))
+        ) : (
+          <h1>postsNotFound</h1>
+        )}
       </div>
     </div>
   );
 }
 
-function MicroscopeIcon(props) {
+function MicroscopeIcon(
+  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
+) {
   return (
     <svg
       {...props}
@@ -87,7 +95,7 @@ function MicroscopeIcon(props) {
   );
 }
 
-function UserIcon(props) {
+function UserIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}

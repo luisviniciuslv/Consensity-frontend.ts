@@ -1,3 +1,6 @@
+import { CardStyled, Desc, Title, Image, Username } from "./styles/card";
+
+
 interface CardDocument {
   title: string;
   content: string;
@@ -5,17 +8,17 @@ interface CardDocument {
 
 export function Card(props: CardDocument) {
   return (
-    <div className="rounded-lg border border-gray-200
-     bg-white text-gray-950 shadow-sm dark:border-gray-800 
-     dark:bg-gray-950 dark:text-gray-50">
-          <div className="flex flex-col space-y-1.5 p-6">
-            <h3 className="text-2xl font-semibold leading-none tracking-tight">
+          <CardStyled>
+            <Image />
+            <Title>
               {props.title}
-            </h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            </Title>
+            <Desc>
               {props.content}
-            </p>
-          </div>
-        </div>
-  ) 
+            </Desc>
+            <Username>
+              luisviniciuslv
+            </Username>
+          </CardStyled>
+  )
 }
